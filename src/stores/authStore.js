@@ -49,6 +49,52 @@ export const useAuthStore = defineStore('auth', {
         }
       }
     },
+    async getActivities() {
+      this.errorMessage = ''
+      try {
+        const id = this.user.id
+        const url = 'http://127.0.0.1:8000/api/activities/{id}'
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: 'Bearer ' + this.token,
+          },
+        })
+        return response.data
+      } catch (error) {
+        if (error.response) {
+          this.errorMessage = error.response.data.message
+          console.log(error)
+        } else if (error.request) {
+          this.errorMessage = error.message
+          console.log(error)
+        } else {
+          console.log(error)
+        }
+      }
+    },
+    async getSessions() {
+      this.errorMessage = ''
+      try {
+        const id = this.user.id
+        const url = 'http://127.0.0.1:8000/api/sessions/{id}'
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: 'Bearer ' + this.token,
+          },
+        })
+        return response.data
+      } catch (error) {
+        if (error.response) {
+          this.errorMessage = error.response.data.message
+          console.log(error)
+        } else if (error.request) {
+          this.errorMessage = error.message
+          console.log(error)
+        } else {
+          console.log(error)
+        }
+      }
+    },
     async logout() {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/logout', {

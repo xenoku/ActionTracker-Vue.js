@@ -1,25 +1,33 @@
 <template>
   <header>
-    <nav>
-      <div v-if="isAuthenticated && user">
-        Welcome, {{ user.name }}
-        <button @click="logout">Logout</button>
-      </div>
-      <div v-else>
-        <form @submit.prevent="login">
-          <div>
-            <label for="email">Email:</label>
-            <input v-model="email" type="email" id="email" required />
-          </div>
-          <div>
-            <label for="password">Password:</label>
-            <input v-model="password" type="password" id="password" required />
-          </div>
-          <button type="submit">Login</button>
-          <p v-if="authError" class="error">{{ authError }}</p>
-        </form>
-      </div>
-    </nav>
+    <div v-if="isAuthenticated && user">
+      <nav>
+        <ul>
+          <li><router-link to="/">Main</router-link></li>
+          <li><router-link to="/activities">Activities</router-link></li>
+          <li><router-link to="/sessions">Sessions</router-link></li>
+        </ul>
+        <div>
+          Welcome, {{ user.name }}
+          <button @click="logout">Logout</button>
+        </div>
+      </nav>
+      <router-view />
+    </div>
+    <div v-else>
+      <form @submit.prevent="login">
+        <div>
+          <label for="email">Email:</label>
+          <input v-model="email" type="email" id="email" required />
+        </div>
+        <div>
+          <label for="password">Password:</label>
+          <input v-model="password" type="password" id="password" required />
+        </div>
+        <button type="submit">Login</button>
+        <p v-if="authError" class="error">{{ authError }}</p>
+      </form>
+    </div>
   </header>
 </template>
 <script>
@@ -38,6 +46,12 @@ export default {
     },
     user() {
       return this.authStore.user
+    },
+    activities() {
+      return this.authStore.activities
+    },
+    sessions() {
+      return this.authStore.sessions
     },
     authError() {
       return this.authStore.errorMessage
