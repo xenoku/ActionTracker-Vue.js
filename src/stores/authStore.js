@@ -31,7 +31,7 @@ export const useAuthStore = defineStore('auth', {
     async getUser() {
       this.errorMessage = ''
       try {
-        const response = await axios.get(backendUrl + '/user', {
+        const response = await axios.get('http://127.0.0.1:8000/api/user', {
           headers: {
             Authorization: 'Bearer ' + this.token,
           },
@@ -51,7 +51,7 @@ export const useAuthStore = defineStore('auth', {
     },
     async logout() {
       try {
-        const response = await axios.get(backendUrl + '/logout', {
+        const response = await axios.get('http://127.0.0.1:8000/api/logout', {
           headers: {
             Authorization: 'Bearer ' + this.token,
           },
