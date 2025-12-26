@@ -1,17 +1,21 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-export const useAuthStore = defineStore('auth', {
+const backendUrl = import.meta.env.VITE_BACKEND_URL
+export const useUserStore = defineStore('user', {
   state: () => ({
     user: null,
     token: localStorage.getItem('token') || null,
     isAuthenticated: false,
+    activities: [],
+    sessions: [],
     errorMessage: '',
   }),
   actions: {
     async login(credentials) {
       this.errorMessage = ''
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/login', credentials)
+        console.log(backendUrl)
+        const response = await axios.post(backendUrl + '/login', credentials)
         this.token = response.data.token
         this.user = response.data.user
         this.isAuthenticated = true
@@ -31,7 +35,7 @@ export const useAuthStore = defineStore('auth', {
     async getUser() {
       this.errorMessage = ''
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user', {
+        const response = await axios.get(backendUrl + '/user', {
           headers: {
             Authorization: 'Bearer ' + this.token,
           },
@@ -52,14 +56,12 @@ export const useAuthStore = defineStore('auth', {
     async getActivities() {
       this.errorMessage = ''
       try {
-        const id = this.user.id
-        const url = 'http://127.0.0.1:8000/api/activities/{id}'
-        const response = await axios.get(url, {
+        const response = await axios.get(backendUrl + '/activities', {
           headers: {
             Authorization: 'Bearer ' + this.token,
           },
         })
-        return response.data
+        this.activities = response.data
       } catch (error) {
         if (error.response) {
           this.errorMessage = error.response.data.message
@@ -75,14 +77,12 @@ export const useAuthStore = defineStore('auth', {
     async getSessions() {
       this.errorMessage = ''
       try {
-        const id = this.user.id
-        const url = 'http://127.0.0.1:8000/api/sessions/{id}'
-        const response = await axios.get(url, {
+        const response = await axios.get(backendUrl + '/sessions', {
           headers: {
             Authorization: 'Bearer ' + this.token,
           },
         })
-        return response.data
+        this.sessions = response.data
       } catch (error) {
         if (error.response) {
           this.errorMessage = error.response.data.message
@@ -97,7 +97,7 @@ export const useAuthStore = defineStore('auth', {
     },
     async logout() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/logout', {
+        const response = await axios.get(backendUrl + '/logout', {
           headers: {
             Authorization: 'Bearer ' + this.token,
           },

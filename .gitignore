@@ -1,5 +1,4 @@
 # Logs
-*.env
 logs
 *.log
 npm-debug.log*
@@ -35,3 +34,6 @@ coverage
 
 # Vitest
 __screenshots__/
+
+.env
+meta/*

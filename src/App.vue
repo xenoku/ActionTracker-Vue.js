@@ -51,7 +51,7 @@
   <router-view></router-view>
 </template>
 <script>
-import { useAuthStore } from '@/stores/authStore'
+import { useUserStore } from '@/stores/userStore'
 import Button from 'primevue/button'
 import Menubar from 'primevue/menubar'
 import InputText from 'primevue/inputtext'
@@ -62,58 +62,60 @@ export default {
       date: '',
       email: '',
       password: '',
-      authStore: useAuthStore(),
+      userStore: useUserStore(),
       items: [
         {
           label: 'Main page',
           icon: 'pi pi-fw pi-home',
           route: '/',
           shortcut: 'Ctrl + H',
-          submenu: []
+          submenu: [],
         },
         {
           label: 'Activities',
           icon: 'pi pi-fw pi-bolt',
-          route: '/activities'
+          route: '/activities',
         },
         {
           label: 'Sessions',
           icon: 'pi pi-fw pi-book',
-          route: '/sessions'
+          route: '/sessions',
         },
       ],
     }
   },
   computed: {
     isAuthenticated() {
-      return this.authStore.isAuthenticated
+      return this.userStore.isAuthenticated
     },
     user() {
-      return this.authStore.user
+      return this.userStore.user
     },
     activities() {
-      return this.authStore.activities
+      return this.userStore.activities
     },
     sessions() {
-      return this.authStore.sessions
+      return this.userStore.sessions
     },
     authError() {
-      return this.authStore.errorMessage
+      return this.userStore.errorMessage
     },
   },
   methods: {
     logout() {
-      this.authStore.logout()
+      this.userStore.logout()
     },
     login() {
-      this.authStore.login({ email: this.email, password: this.password })
+      this.userStore.login({ email: this.email, password: this.password })
     },
   },
   mounted() {
     const token = localStorage.getItem('token')
     if (token) {
-      this.authStore.isAuthenticated = true
-      this.authStore.getUser()
+      this.userStore.isAuthenticated = true
+      this.userStore.getUser()
+      this.userStore.getActivities()
+      this.userStore.getSessions()
     }
   },
 }
