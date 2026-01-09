@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainView from '@/components/MainView.vue'
 import ActivitiesView from '@/components/ActivitiesView.vue'
+import ActivitiesCreateForm from '@/components/ActivitiesCreateForm.vue'
 import SessionsView from '@/components/SessionsView.vue'
 const routes = [
   {
@@ -10,6 +11,10 @@ const routes = [
   {
     path: '/activities',
     component: ActivitiesView,
+  },
+  {
+    path: '/activities/create',
+    component: ActivitiesCreateForm,
   },
   {
     path: '/sessions',

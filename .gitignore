@@ -35,4 +35,5 @@ coverage
 # Vitest
 __screenshots__/
 
+.env
 meta/*

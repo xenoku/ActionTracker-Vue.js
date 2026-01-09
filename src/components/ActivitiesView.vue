@@ -6,7 +6,7 @@
     :paginator="true"
     :rows="perpage"
     :rowsPerPageOptions="[2, 5, 10]"
-    :totalRecords="sessionsTotal"
+    :totalRecords="activitiesTotal"
     @page="onPageChange"
     responsiveLayout="scroll"
     :first="first"
@@ -18,17 +18,37 @@
     </Column>
     <Column field="name" header="Name" />
     <Column field="description" header="Description" />
+    <Column header="Image">
+      <template #body="slotProps">
+        <img
+          :src="slotProps.data.image_url"
+          alt="Image"
+          style="width: 100px; height: 100px; object-fit: cover"
+        />
+      </template>
+    </Column>
+    <template #footer>
+      <div class="flex justify-end">
+        <Button
+          type="button"
+          @click="this.$router.push('activities/create')"
+          icon="pi pi-plus"
+          label="Add activity"
+        />
+      </div>
+    </template>
   </DataTable>
 </template>
 
 <script>
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+import Button from 'primevue/button'
 import { useUserStore } from '@/stores/userStore'
 
 export default {
   name: 'ActivitiesTable',
-  components: { DataTable, Column },
+  components: { DataTable, Column, Button },
   data() {
     return {
       userStore: useUserStore(),
